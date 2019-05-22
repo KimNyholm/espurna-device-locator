@@ -4,5 +4,5 @@ pushd dist
 git init
 git add -A
 git commit -m "deploy"
-git push -f https://github.com/kimnyholm/tasmota-device-locator master:gh-pages
+git push -f https://github.com/kimnyholm/espurna-device-locator master:gh-pages
 popd

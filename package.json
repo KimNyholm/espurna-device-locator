@@ -1,5 +1,5 @@
 {
-  "name": "tasmota-device-locator",
+  "name": "espurna-device-locator",
   "version": "0.1.0",
   "private": true,
   "scripts": {

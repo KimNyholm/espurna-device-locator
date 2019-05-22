@@ -21,12 +21,12 @@
   
 <script>
 
-  const TasmotaDeviceClass = require('./TasmotaDeviceClass').TasmotaDeviceClass
+  const ESPurnaDeviceClass = require('./ESPurnaDeviceClass').ESPurnaDeviceClass
 
   export default {
     
     name: 'DeviceSearch',
-    props: ['search', 'subnet', 'password'],
+    props: ['search', 'subnet'],
 
     data() {
       return {
@@ -73,7 +73,7 @@
           for (let i = 0; i<255; i++){
             this.total++
             const ip = base + i;
-            const device = new TasmotaDeviceClass(ip, this.password, this.tasmotaConnectionHandler);
+            const device = new ESPurnaDeviceClass(ip, this.connectionHandler);
             this.queue.push(device)
           }
           // Strange, sometimes a device is not found.
@@ -85,13 +85,13 @@
           }
       },
 
-      tasmotaConnectionHandler: function(update, state) {
+      connectionHandler: function(update, state) {
         this.dequeue()
         this.counter++
         if (state){
             const ip = update.ip
             const url = 'http://' + ip
-            const device = {IP: ip, url: url, type: 'Tasmota', state: update.state, name: update.name, model: update.model, version: update.version}
+            const device = {IP: ip, url: url, type: update.type, state: update.state, name: update.name, model: update.model, version: update.version}
             this.$emit('deviceFound', device);
         }
         this.$emit('searchStatus', ((100*this.counter) / this.total));

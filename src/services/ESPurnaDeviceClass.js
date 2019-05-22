@@ -17,60 +17,36 @@
 
 const getValue = require('get-value')
 const axios = require('axios');
-export class TasmotaDeviceClass {
+export class ESPurnaDeviceClass {
 
-  constructor(ip, password, connectionHandler) {
+  constructor(ip, connectionHandler) {
     this.connectionHandler = connectionHandler;
     this.connected = false;
     this.trying = false;
     this.ip = ip;
-    this.password = password
+    this.type = 'unknown'
     this.name = 'unknown'
     this.model = 'unknown'
     this.version = 'unknown'
     this.state = 'unknown'
   }
 
-  buildCommand(command) {
-    let credentials = ''
-    if (this.password) {
-      credentials = '&user=admin&password=' + this.password
-    }
-    return 'cm?cmnd='+command+credentials
-  }
-
-  // Experimental, does not seem to be necessary.
-  wait(delay, response) {
-    return new Promise(resolve => {
-      setTimeout(() => resolve(response), delay)
-    })
-  }
-
   tryConnection() {
     if (!this.trying) {
       this.trying = true;
-      this.API('Module')
+      this.API('discover')
       .then(response => {
-        this.model = getValue(response, 'data.Module')
-        const warning = getValue(response, 'data.WARNING')
+        console.log(response)
+        this.type = getValue(response, 'data.app')
+        this.model = getValue(response, 'data.device')
+        this.version = getValue(response, 'data.version')
+        this.name = getValue(response, 'data.hostname')
         this.state = 'OK'
-        if (warning) {
-          this.state = 'Password protected'
-        }
-        return this.API('FriendlyName')
-      })
-      .then((response) => this.wait(1, response))
-      .then(response => {
-        this.name = getValue(response, 'data.FriendlyName1')
-        return this.API('Status%202')
-      })
-      .then((response) => this.wait(1, response))
-      .then(response => {
-        this.version = getValue(response, 'data.StatusFWR.Version')
         this.setConnectionState(true)
         return Promise.resolve()
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log(e)
         this.setConnectionState(false)
       })
     }
@@ -86,8 +62,8 @@ export class TasmotaDeviceClass {
 
   API(command) {
     var apiHost = this.ip;
-    var url = 'http:////' + apiHost + '/' + this.buildCommand(command);
-    return axios({url: url, method: 'GET', timeout:2000})
+    var url = 'http://' + apiHost + '/' + command;
+    return axios({url:url, method:'GET', timeout:2000})
   }
 
 }
