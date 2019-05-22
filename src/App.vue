@@ -80,7 +80,7 @@ export default {
       count: 0,
       devices: [],
       progress: 0,
-      subnet: '192.168.0.105',
+      subnet: '',
       searching: false
     }
   },
