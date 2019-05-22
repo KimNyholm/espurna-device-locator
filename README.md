@@ -2,7 +2,10 @@
 
 Locate ESPurna Devices on your network when you only know the subnet of the device.
 The search is done with javascript in a browser and no software installation is required.
-Only newer devices with CORS support will be found.
+
+note:
+This is an experimental version. To work, devices must allow from * and not send the allow credentials header.
+Alternatively the WEB_REMOTE_DOMAIN must be set to the domain of the webserver, running the ESPurna Device Locator.
 
 ![ESPurna Device Locator](https://github.com/KimNyholm/espurna-device-locator/blob/master/doc/ESPurnaDeviceLocator.png)
 
