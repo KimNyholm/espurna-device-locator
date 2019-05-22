@@ -64,7 +64,7 @@
       </md-card-content>
     </md-card>
     <p>Any information collected is kept within the browser</p>
-    <p>More information on <a href="https://github.com/KimNyholm/espurna-device-locater">github</a></p>
+    <p>More information on <a href="https://github.com/KimNyholm/espurna-device-locator">github</a></p>
     <p>Copyrigth (C) Kim Nyholm 2019</p>
   </div>
 </template>
